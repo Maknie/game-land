@@ -16,6 +16,66 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/today", async (req, res) => {
+  try {
+    let forCurrentDay = new Date();
+    forCurrentDay.toUTCString();
+    forCurrentDay.setHours(0);
+    const customers = await Customer
+    .find({ date: { $gte: forCurrentDay }})
+    .sort({ exitTime: 1 });
+    res.send(customers);
+  } catch (err) {
+    res.send({
+      message: err,
+    });
+  }
+});
+
+// Get total earnings Customers
+router.get("/total", async (req, res) => {
+  try {
+    let today = new Date();
+    today.toUTCString();
+    let forCurrentDay = new Date(today);
+    let forCurrentWeek = new Date(today);
+    let forPrevMonth = new Date(today);
+    forCurrentDay.setDate(today.getDate());
+    forCurrentWeek.setDate(today.getDate() - 7);
+    forPrevMonth.setMonth(today.getMonth() - 1);
+    forCurrentDay.setHours(00);
+    forCurrentWeek.setHours(00);
+    forPrevMonth.setHours(00);
+
+    const getEarnings = (elementsArray) => {
+      let earnings = 0;
+      for (let i = 0; i < elementsArray.length; i++) {
+        earnings = earnings + elementsArray[i].price;
+      }
+      return earnings;
+    };
+
+    const customersForLastDay = await Customer.find({
+      date: { $gte: forCurrentDay },
+    });
+    const customersForLastWeek = await Customer.find({
+      date: { $gte: forCurrentWeek },
+    });
+    const customersForLastMonth = await Customer.find({
+      date: { $gte: forPrevMonth },
+    });
+    res.send({
+      earningsTodayDay: getEarnings(customersForLastDay),
+      earningsThisWeek: getEarnings(customersForLastWeek),
+      earningsPrevMonth: getEarnings(customersForLastMonth),
+    });
+  } catch (err) {
+    res.send({
+      message: err,
+    });
+  }
+});
+
 // Get Array of specific Customers by plan
 router.get("/:customerPlan", async (req, res) => {
   try {
@@ -34,13 +94,13 @@ router.get("/:customerPlan", async (req, res) => {
 // In request needed only "name", "givenID", "parentsPhone", "plan"
 router.post("/", (req, res) => {
   const getTwoDigitedTime = (hours, minutes, seconds) => {
-    if (0 < hours && hours < 10) {
+    if (-1 < hours && hours < 10) {
       hours = "0" + hours;
     }
-    if (0 < minutes && minutes < 10) {
+    if (-1 < minutes && minutes < 10) {
       minutes = "0" + minutes;
     }
-    if (0 < seconds && seconds < 10) {
+    if (-1 < seconds && seconds < 10) {
       seconds = "0" + seconds;
     }
     return hours + ":" + minutes + ":" + seconds + "";
@@ -77,6 +137,12 @@ router.post("/", (req, res) => {
     }
   };
 
+  const currentDate = () => {
+    let today = new Date();
+    today.toUTCString();
+    return today;
+  };
+
   const customer = new Customer({
     name: req.body.name,
     givenId: req.body.givenId,
@@ -85,6 +151,7 @@ router.post("/", (req, res) => {
     price: priceCalculate(req.body.plan),
     enterTime: new Date().toLocaleTimeString(),
     exitTime: exitTimeCalculate(req.body.plan),
+    date: currentDate(),
   });
 
   customer

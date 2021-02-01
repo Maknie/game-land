@@ -13,10 +13,7 @@ const customerSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  date: {
-    type: Date,
-    default: Date.now
-  },
+  date: String,
   plan: String,
   price: Number,
 });
