@@ -1,46 +1,46 @@
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import { Col, Row } from "react-bootstrap";
-import {
-  MIN_30,
-  HOUR_1,
-  UNLIMIT,
-} from "../consts/plans";
+import { MIN_30, HOUR_1, UNLIMIT } from "../consts/plans";
 
 const CustomerCard = (props) => {
   const background = () => {
+    const today = new Date();
+    let currentHour = today.getHours();
+    let currentMinute = today.getMinutes();
+    currentHour = ("0" + currentHour).slice(-2);
+    currentMinute = ("0" + currentMinute).slice(-2);
+    const exitDate = new Date(props.date); // НЕ ВРЕМЯ ПОКИДАНИЯ, А ДАТА
+    if (
+      today.getDay() > exitDate.getDay() ||
+      today.getMonth() > exitDate.getMonth()
+    ) {
+      return "warning";
+    }
+
     if (props.plan === MIN_30) {
       const today = new Date();
       const exitHour = props.exitTime.split(":")[0];
       const exitMinute = props.exitTime.split(":")[1];
-      if (today.getHours() > exitHour) {
+      if (currentHour > exitHour) {
         return "warning";
-      } else if (
-        today.getHours() === exitHour &&
-        today.getMinutes() > exitMinute
-      ) {
-        return "warning";
+      }
+      if (currentHour === exitHour) {
+        if (currentMinute > exitMinute) {
+          return "warning";
+        }
       }
     }
     if (props.plan === HOUR_1) {
       const today = new Date();
       const exitHour = props.exitTime.split(":")[0];
       const exitMinute = props.exitTime.split(":")[1];
-      if (today.getHours() > exitHour) {
+      if (currentHour > exitHour) {
         return "warning";
       } else if (
-        today.getHours() === exitHour &&
-        today.getMinutes() > exitMinute
+        currentHour === exitHour &&
+        currentMinute > exitMinute
       ) {
-        return "warning";
-      }
-    }
-    if (props.plan === UNLIMIT) {
-      const today = new Date();
-      const exitHour = props.exitTime.split(":")[0];
-      const exitMinute = props.exitTime.split(":")[1];
-      const exitSecond = props.exitTime.split(":")[2];
-      if (today.getHours() > exitHour) {
         return "warning";
       }
     }

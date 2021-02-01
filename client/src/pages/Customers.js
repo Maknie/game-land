@@ -37,6 +37,7 @@ const Customers = () => {
                   exitTime={customer.exitTime}
                   plan={customer.plan}
                   date={customer.date}
+                  isTimedOut={customer.isTimedOut}
                 />
               </Col>
             ))}

@@ -1,18 +1,25 @@
-import "./App.css";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import NavBar from "./components/NavBar";
+import { Container } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.css";
+import NavBar from "./components/NavBar";
 import CustomersToday from "./pages/CustomersToday";
 import Customers from "./pages/Customers";
-import { Container } from "react-bootstrap";
+import CustomerAdd from "./pages/CustomerAdd";
+import Footer from "./components/Footer";
 
 function App() {
-  return (                                                                                        
+  return (
     <Router>
       <NavBar />
       <Container>
-        <Route exact path="/" component={CustomersToday}/>
-        <Route exact path="/all-time-customers" component={Customers}/>
+        <Route exact path="/" component={CustomersToday} />
+        <Route exact path="/available" component={CustomersToday} />
+        <Route exact path="/all-time-customers" component={Customers} />
+        <Route exact path="/create-customer" component={CustomerAdd} />
+      </Container>
+      <Container>
+        <Footer/>
       </Container>
     </Router>
   );

@@ -1,4 +1,3 @@
-import { Route } from "react-router-dom";
 import { LinkContainer } from "react-router-bootstrap";
 import { Navbar, Nav, Container } from "react-bootstrap";
 
@@ -16,9 +15,9 @@ const NavBar = () => {
                 Клиенты за все время
               </Nav.Link>
             </LinkContainer>
-            <LinkContainer to="/">
+            <LinkContainer to="/available">
               <Nav.Link>
-              Клиенты за сегодня
+              Клиенты в зале
               </Nav.Link>
             </LinkContainer>
             <LinkContainer to="/create-customer">
