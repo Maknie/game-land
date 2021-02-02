@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import CustomerCard from "../components/CustomerCard";
 import { Row, Col } from "react-bootstrap";
 import Loader from "../components/Loader";
+import { MIN_30 } from '../consts/plans'
 
 const CustomersToday = () => {
   const [customers, setCustomers] = useState([]);
@@ -10,7 +11,7 @@ const CustomersToday = () => {
 
   useEffect(() => {
     const loadData = async () => {
-      const res = await fetch("http://localhost:5000/customers/available");
+      const res = await fetch(`http://localhost:5000/customers/${MIN_30}`);
       const data = await res.json();
       console.log(data);
       setCustomers(data);
@@ -24,7 +25,7 @@ const CustomersToday = () => {
   } else {
     return (
       <div className="CustomersToday">
-        <h3 className="text-center mb-3">Все клиенты в зале</h3>
+        <h3 className="text-center mb-3">Все клиенты c тарифом "30 минут"</h3>
         <Row>
           {customers.map((customer) => (
             <Col key={customer._id} sm={12} md={6} lg={4} xl={3}>

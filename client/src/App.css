@@ -7,3 +7,18 @@
     background-color: transparent;
     border-radius: 5px;
 }
+
+.colWhote {
+    color: #ffffff;
+}
+
+.colWhote:hover {
+    color: #ffffff;
+}
+.colRed {
+    color: #f80000;
+}
+
+.colRed:hover {
+    color: #ff0000;
+}

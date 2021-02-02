@@ -26,10 +26,12 @@ const Customers = () => {
   }else {
     return (
         <div className="Customers">
+          <h3 className="text-center mb-3">Все клиенты за все время</h3>
           <Row>
             {customers.map((customer) => (
               <Col key={customer._id} sm={12} md={6} lg={4} xl={3}>
                 <CustomerCard
+                  id={customer._id}
                   name={customer.name}
                   parentsPhone={customer.parentsPhone}
                   givenId={customer.givenId}

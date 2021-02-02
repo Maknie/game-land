@@ -16,13 +16,13 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/today", async (req, res) => {
+router.get("/available", async (req, res) => {
   try {
     let forCurrentDay = new Date();
     forCurrentDay.toUTCString();
     forCurrentDay.setHours(0);
     const customers = await Customer
-    .find({ date: { $gte: forCurrentDay }})
+    .find({ isTimedOut: { $eq: false }})
     .sort({ exitTime: 1 });
     res.send(customers);
   } catch (err) {
@@ -167,7 +167,7 @@ router.post("/", (req, res) => {
 });
 
 // When time is up
-router.patch("/timeout/:customerId", async (req, res) => {
+router.post("/timeout/:customerId", async (req, res) => {
   try {
     const timedOutCustomer = await Customer.updateOne(
       { _id: req.params.customerId },
