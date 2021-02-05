@@ -7,7 +7,23 @@ const router = express.Router();
 // Get Array of all Customers
 router.get("/", async (req, res) => {
   try {
-    const customers = await Customer.find().sort({ exitTime: 1 });
+    const customers = await Customer.find().sort({ date: 1 });
+    res.send(customers);
+  } catch (err) {
+    res.send({
+      message: err,
+    });
+  }
+});
+
+router.post("/date/", async (req, res) => {
+  try {
+    let forRequestedDay = new Date(req.body.date);
+    forRequestedDay.toUTCString();
+    forRequestedDay.setHours(09);
+    const customers = await Customer
+    .find({ date: { $gte: forRequestedDay }})
+    .sort({ exitTime: 1 });
     res.send(customers);
   } catch (err) {
     res.send({

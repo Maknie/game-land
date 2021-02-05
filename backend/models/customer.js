@@ -16,6 +16,10 @@ const customerSchema = new mongoose.Schema({
   date: String,
   plan: String,
   price: Number,
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
 });
 
 module.exports = mongoose.model("Customer", customerSchema);
