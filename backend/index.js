@@ -2,9 +2,10 @@ const express = require("express");
 const mongoose = require("mongoose");
 require("dotenv").config();
 const PORT = process.env.PORT;
-const CustomerRoute = require("./routes/customers")
 const bodyParser = require("body-parser")
 const cors = require("cors")
+const CustomerRoute = require("./routes/customers")
+const EarningRoute = require("./routes/earnings")
 
 // Express
 const app = express();
@@ -13,6 +14,7 @@ const app = express();
 app.use(cors())
 app.use(bodyParser.json())
 app.use('/customers', CustomerRoute)
+app.use('/earnings', EarningRoute)
 
 // Conection to DB
 mongoose
